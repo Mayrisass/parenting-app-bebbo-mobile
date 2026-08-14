@@ -472,7 +472,14 @@ export const randomArrayShuffle = <T>(array: T[]): T[] => {
 
 export const getYoutubeId = (url: string): string => {
   let rval: string = url;
+  if (url?.indexOf("shorts/") !== -1) {
+    const re = new RegExp("shorts/([^?&/]+)", "img");
+    const result = re.exec(url);
 
+    if (result && result[1]) {
+      return result[1];
+    }
+  }
   if (url?.indexOf("youtu.be") === -1) {
     const re = new RegExp("v=([^&]+)", "img");
     const result = re.exec(url);
@@ -707,6 +714,16 @@ export const getLanguageCode = (languageCode: string): string => {
   return "en";
 };
 
+export const getDatePickerLocale = (languageCode: string): string => {
+  switch (languageCode) {
+    case "rs-sr":
+      return "sr-Latn-RS";
+    case "xk-rs":
+      return "sr-Latn-XK";
+    default:
+      return getLanguageCode(languageCode);
+  }
+};
 //child data get
 export const getChild = async (child: any, genders: any): Promise<any> => {
   try {
